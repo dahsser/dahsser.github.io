@@ -1,1 +1,107 @@
-Hola amiguito :)
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Hexágono tridimensional</title>
+	<style>
+		body {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			height: 100vh;
+			margin: 0;
+			font-family: Arial, sans-serif;
+		}
+
+		canvas {
+			border: 1px solid #eee;
+		}
+	</style>
+</head>
+
+<body>
+	<canvas id="hexagonCanvas"></canvas>
+	<div>
+		<label for="wallColor1">Color de pared 1:</label>
+		<input type="color" id="wallColor1" value="#80f080">
+		<label for="wallColor2">Color de pared 2:</label>
+		<input type="color" id="wallColor2" value="#7da7d9">
+		<label for="floorColor">Color de piso:</label>
+		<input type="color" id="floorColor" value="#cccccc">
+	</div>
+	<script>
+		const canvas = document.getElementById("hexagonCanvas");
+		const ctx = canvas.getContext("2d");
+		const wallColor1 = document.getElementById("wallColor1");
+		const wallColor2 = document.getElementById("wallColor2");
+		const floorColor = document.getElementById("floorColor");
+
+		canvas.width = 350;
+		canvas.height = 350;
+
+		function drawShadow(offsetx, offsety) {
+			ctx.shadowColor = "#000";
+			ctx.shadowBlur = 10;
+			ctx.shadowOffsetX = offsetx || 5;
+			ctx.shadowOffsetY = offsety || 5;
+		}
+
+		function clearShadow() {
+			ctx.shadowColor = "transparent";
+			ctx.shadowBlur = 0;
+			ctx.shadowOffsetX = 0;
+			ctx.shadowOffsetY = 0;
+		}
+		const paddingX = 25;
+		const paddingY = 25;
+		function drawHexagon() {
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+			ctx.beginPath();
+			ctx.moveTo(150 + paddingX, 150 + paddingY);
+			ctx.lineTo(300 + paddingX, 225 + paddingY);
+			ctx.lineTo(150 + paddingX, 300 + paddingY);
+			ctx.lineTo(0 + paddingX, 225 + paddingY);
+			ctx.closePath();
+			drawShadow(-10, 1);
+			ctx.fillStyle = floorColor.value;
+			ctx.fill();
+			clearShadow();
+
+			ctx.beginPath();
+			ctx.moveTo(150 + paddingX, 0 + paddingY);
+			ctx.lineTo(300 + paddingX, 75 + paddingY);
+			ctx.lineTo(300 + paddingX, 225 + paddingY);
+			ctx.lineTo(150 + paddingX, 150 + paddingY);
+			ctx.closePath();
+
+			drawShadow(5, 1);
+			ctx.fillStyle = wallColor2.value;
+			ctx.fill();
+			clearShadow();
+
+
+			ctx.beginPath();
+			ctx.moveTo(150 + paddingX, 0 + paddingY);
+			ctx.lineTo(0 + paddingX, 75 + paddingY);
+			ctx.lineTo(0 + paddingX, 225 + paddingY);
+			ctx.lineTo(150 + paddingX, 150 + paddingY);
+			ctx.closePath();
+			drawShadow(-5, 1);
+			ctx.fillStyle = wallColor1.value;
+			ctx.fill();
+			clearShadow();
+		}
+
+		wallColor1.addEventListener("input", drawHexagon);
+		wallColor2.addEventListener("input", drawHexagon);
+		floorColor.addEventListener("input", drawHexagon);
+
+		drawHexagon();
+	</script>
+</body>
+
+</html>
